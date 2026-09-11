@@ -33,13 +33,15 @@ void loop() {
 #define OLED_SDA 5
 #define OLED_SCL 4
 #define OLED_RST 16
-#define Button_Pin 13
+#define Button_Pin 5
 
 Adafruit_SSD1306 display(128, 64, &Wire, OLED_RST);
 
 void setup() {
-  pinMode(Button_Pin, OUTPUT);
-  attachInterrupt(0, printButtonInterrupt, RISING);
+  pinMode(Button_Pin, INPUT);
+  
+  attachInterrupt(digitalPinToInterrupt(Button_Pin), printButtonInterrupt, RISING);
+
   Wire.begin(OLED_SDA, OLED_SCL);
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     for(;;); 
@@ -62,5 +64,6 @@ void printButtonInterrupt(){
   display.setTextColor(WHITE);
   display.setCursor(20, 20);
   display.print("Interrupt!"); 
-  display.display();          
+  display.display();      
+  delay(3000);     
 }
